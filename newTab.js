@@ -949,4 +949,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     tasksContainer.classList.remove("hidden");
   }
+
+  const quotes = [
+    "Believe you can and you're halfway there. - Theodore Roosevelt",
+    "The only way to do great work is to love what you do. - Steve Jobs",
+    "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+    "It does not matter how slowly you go, as long as you do not stop. - Confucius",
+    "Be the change that you wish to see in the world. - Mahatma Gandhi",
+    "Stay hungry, stay foolish. - Steve Jobs",
+    "The best way to predict the future is to create it. - Abraham Lincoln",
+    "The journey of a thousand miles begins with one step. - Lao Tzu ",
+    "A person who is not afraid to admit when they don't know something is more likely to learn. - Socrates",
+    "If you want to change the world, you have to start by changing yourself. - Mother Teresa",
+    "In the end, we only regret the chances we didn't take. - Unknown"
+  ];
+
+  const quote = quotes[Math.floor(Math.random() * quotes.length)];
+  
+  const quoteOverlay = document.getElementById("quote-overlay");
+  quoteOverlay.textContent = quote;
+  
 });
