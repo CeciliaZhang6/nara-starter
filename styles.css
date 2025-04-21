@@ -537,6 +537,25 @@ input[type="checkbox"]:checked+.task-text {
     animation: welcomeFadeIn 1s ease-out forwards;
     }
 
+/* Quote overlay Styles */
+#quote-overlay {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: 1.2rem;
+    color: #444;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-style: italic;
+    max-width: 500px;
+    width: fit-content;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    text-align: right;
+  }
+  
+
 /* Speech Bubble Styles */
 .speech-bubble {
     position: fixed;
