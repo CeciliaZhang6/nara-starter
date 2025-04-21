@@ -1853,6 +1853,17 @@ document.addEventListener("DOMContentLoaded", () => {
         tasks[originalIndex].completed = checkbox.checked;
 
         if (tasks[originalIndex].completed) {
+
+          const completedTask = {
+            text: tasks[originalIndex].text,
+            timestamp: new Date().toISOString(),
+          };
+      
+          chrome.storage.local.get({ history: [] }, (data) => {
+            const updatedHistory = [...data.history, completedTask];
+            chrome.storage.local.set({ history: updatedHistory });
+          });
+      
           // Get the delete button and remove it if it exists
           const deleteButton = taskItem.querySelector(".delete-task");
           if (deleteButton) deleteButton.remove();
@@ -2303,4 +2314,51 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener('apiKeyChanged', updateButtonVisibility);
   }
 
+  const viewHistoryButton = document.getElementById("view-history-button");
+  const historyModal = document.getElementById("history-modal");
+  const historyList = document.getElementById("history-list");
+  const closeHistoryButton = document.getElementById("close-history-button");
+
+  viewHistoryButton.addEventListener("click", () => {
+    historyList.innerHTML = "";
+  
+    chrome.storage.local.get({ history: [] }, (data) => {
+      if (data.history.length === 0) {
+        const emptyItem = document.createElement("li");
+        emptyItem.textContent = "History is empty.";
+        historyList.appendChild(emptyItem);
+  
+        // Hide clear button
+        clearHistoryButton.style.display = "none";
+      } else {
+        data.history.slice().reverse().forEach((entry) => {
+          const item = document.createElement("li");
+          const time = new Date(entry.timestamp).toLocaleString();
+          item.textContent = `✔️ ${entry.text} — ${time}`;
+          historyList.appendChild(item);
+        });
+  
+        // Show clear button
+        clearHistoryButton.style.display = "inline-block";
+      }
+  
+      historyModal.classList.remove("hidden");
+    });
+  });  
+
+  closeHistoryButton.addEventListener("click", () => {
+    historyModal.classList.add("hidden");
+    clearHistoryButton.style.display = "inline-block"; // reset it just in case
+  });
+  
+
+  const clearHistoryButton = document.getElementById("clear-history-button");
+
+  clearHistoryButton.addEventListener("click", () => {
+    chrome.storage.local.set({ history: [] }, () => {
+      historyList.innerHTML = "<li>History cleared.</li>";
+      clearHistoryButton.style.display = "none"; // hide button right after clicking
+    });
+  });
+  
 });
