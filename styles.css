@@ -109,6 +109,24 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.category-button.special {
+    background: linear-gradient(135deg, rgba(65, 88, 208, 0.1), rgba(65, 88, 208, 0.3));
+    color: #4158D0;
+    font-weight: 600;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    margin-top: 10px;
+    font-family: 'Slackside One', sans-serif;
+    text-transform: lowercase;
+    font-size: 16px;
+}
+
+.category-button.special:hover {
+    background: linear-gradient(135deg, rgba(65, 88, 208, 0.2), rgba(65, 88, 208, 0.4));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 /* Tasks container */
 #tasks-container {
     position: fixed;
@@ -342,6 +360,36 @@ input[type="checkbox"]:checked+.task-text {
     transform: rotate(45deg);
 }
 
+/* Delete API Key Button */
+#delete-api-button {
+    position: fixed;
+    bottom: 20px;
+    right: 70px;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    color: #6B7280;
+    transition: all 0.3s ease;
+}
+
+#delete-api-button:hover {
+    background-color: #ef4444;
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+#delete-api-button.hidden {
+    display: none;
+}
+
 /* Reset Modal */
 #reset-modal {
     position: fixed;
@@ -507,3 +555,709 @@ input[type="checkbox"]:checked+.task-text {
     text-align: right;
   }
   
+
+/* Speech Bubble Styles */
+.speech-bubble {
+    position: fixed;
+    background-color: white;
+    border-radius: 20px;
+    padding: 12px 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    font-family: 'Slackside One', sans-serif;
+    font-size: 20px;
+    color: #2c3e50;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 1000;
+    text-align: center;
+    min-width: 150px;
+    max-width: 220px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 12px 12px 0;
+    border-style: solid;
+    border-color: white transparent transparent;
+    filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.1));
+}
+
+.speech-bubble.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    15% {
+        opacity: 1;
+        transform: translateY(0) scale(1.05);
+    }
+    20% {
+        transform: translateY(0) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+    }
+}
+
+.speech-bubble.animated {
+    animation: fadeInOut 3s forwards;
+}
+
+/* Mood Selection Styles */
+.mood-selector-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.mood-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2c3e50;
+    margin: 0;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.mood-options {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.mood-option {
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mood-option:hover {
+    transform: scale(1.2);
+}
+
+.mood-option.selected {
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(1.2);
+}
+
+.current-mood {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #4B5563;
+    text-align: center;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.mood-option.pulse {
+    animation: pulse 0.5s ease;
+}
+
+/* Deer Info and Chat Styles */
+.deer-info {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 16px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 250px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 990;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.deer-info.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.deer-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 5px;
+    font-family: 'Slackside One', sans-serif;
+    text-transform: lowercase;
+    text-align: center;
+}
+
+.deer-description {
+    font-size: 14px;
+    color: #4B5563;
+    margin: 0 0 12px;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: lowercase;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.chat-button {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 16px;
+    color: #4158D0;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+    font-family: 'Slackside One', sans-serif;
+    text-transform: lowercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chat-button:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Thinking animation dots */
+.thinking-dots {
+    display: inline-flex;
+    margin-left: 6px;
+    align-items: center;
+}
+
+.thinking-dot {
+    width: 5px;
+    height: 5px;
+    background-color: #4158D0;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: thinkingDot 1.4s infinite;
+}
+
+.thinking-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.thinking-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes thinkingDot {
+    0%, 100% { 
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+    50% { 
+        transform: translateY(-4px);
+        opacity: 1;
+    }
+}
+
+/* Typewriter effect for deer chat button */
+.typewriter {
+    overflow: hidden;
+    border-right: 3px solid #4158D0;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .1em;
+    animation: typing 2.5s steps(30, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #4158D0 }
+}
+
+/* Chat Modal */
+.chat-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.chat-modal.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.chat-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.chat-container {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    height: 80%;
+    max-height: 600px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.chat-modal.visible .chat-container {
+    transform: scale(1);
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: #4B5563;
+    font-size: 20px;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    margin-left: auto;
+}
+
+.chat-close:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.chat-title {
+    display: flex;
+    align-items: center;
+}
+
+.chat-deer-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+.chat-deer-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1F2937;
+    font-family: 'Slackside One', sans-serif;
+    text-transform: lowercase;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.chat-message {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    background-color: #4158D0;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.deer {
+    align-self: flex-start;
+    background-color: #f3f4f6;
+    color: #1F2937;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-input-container {
+    padding: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    gap: 8px;
+}
+
+.chat-input {
+    flex: 1;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 24px;
+    padding: 10px 16px;
+    font-size: 14px;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.chat-input:focus {
+    border-color: #4158D0;
+    box-shadow: 0 0 0 2px rgba(65, 88, 208, 0.2);
+}
+
+.chat-send {
+    background-color: #4158D0;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.chat-send:hover {
+    background-color: #364bba;
+}
+
+.chat-send:disabled {
+    background-color: #9CA3AF;
+    cursor: not-allowed;
+}
+
+.chat-loading {
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+
+.chat-loading-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.chat-loading-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #9CA3AF;
+    animation: loadingDot 1.5s infinite;
+}
+
+.chat-loading-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.chat-loading-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes loadingDot {
+    0%, 100% { transform: scale(0.7); opacity: 0.5; }
+    50% { transform: scale(1); opacity: 1; }
+}
+
+.api-key-container {
+    padding: 16px;
+    text-align: center;
+}
+
+.api-key-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.api-key-save {
+    background-color: #4158D0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.api-key-message {
+    font-size: 12px;
+    margin-top: 8px;
+    color: #6B7280;
+}
+
+.chat-welcome {
+    text-align: center;
+    color: #6B7280;
+    font-size: 14px;
+    margin: 24px 0;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.chat-welcome p:first-child {
+    font-family: 'Slackside One', sans-serif;
+    font-size: 16px;
+    color: #4158D0;
+    margin-bottom: 8px;
+}
+
+/* API Key Popup */
+#api-key-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#api-key-popup.hidden {
+    display: none !important;
+}
+
+#api-key-popup.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.api-key-container {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+#api-key-popup.visible .api-key-container {
+    transform: scale(1);
+}
+
+.api-key-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1F2937;
+    margin: 0 0 16px;
+    font-family: 'Slackside One', sans-serif;
+    text-transform: lowercase;
+}
+
+.api-key-description {
+    color: #6B7280;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.api-key-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background-color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    font-family: monospace;
+}
+
+.api-key-input:focus {
+    outline: none;
+    border-color: #4158D0;
+    box-shadow: 0 0 0 2px rgba(65, 88, 208, 0.2);
+}
+
+.api-key-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.api-key-save, .api-key-cancel {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.api-key-save {
+    background-color: #4158D0;
+    color: white;
+}
+
+.api-key-save:hover {
+    background-color: #364bba;
+}
+
+.api-key-cancel {
+    background-color: #E5E7EB;
+    color: #4B5563;
+}
+
+.api-key-cancel:hover {
+    background-color: #D1D5DB;
+}
+
+.api-key-footer {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #6B7280;
+}
+
+/* Category Circle Indicator */
+.category-circle-indicator {
+    position: fixed;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    z-index: 980;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    animation: fadeAndSlideIn 0.8s ease;
+}
+
+.circle-inner {
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(65, 88, 208, 0.15), rgba(65, 88, 208, 0.3));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    text-align: center;
+}
+
+.circle-emoji {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.circle-title {
+    font-family: 'Slackside One', sans-serif;
+    font-size: 20px;
+    color: #1F2937;
+    margin: 0 0 4px;
+    text-transform: lowercase;
+}
+
+.circle-description {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #4B5563;
+    margin: 0;
+    text-transform: lowercase;
+}
+
+@keyframes fadeAndSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
